@@ -12,6 +12,7 @@
     </head>
     <body>
         <h1>Simple POST</h1>
+        <h2 id="server-site">HTTP Server: </h2>
         <form id="form">
             <input name="name" placeholder="Enter name"/>
             <input name="email" placeholder="Enter email"/>
@@ -21,6 +22,13 @@
     </body>
     <script>
         const form = document.getElementById("form")
+        const serverH2 = document.getElementById("server-site")
+
+        const serverURL = "https://peaceful-sierra-47869.herokuapp.com/signup"
+        // const serverURL = "https://pokemon-tm-movelist-backend.herokuapp.com/pokemons"
+
+        serverH2.innerText += ` ${serverURL}`
+
         form.addEventListener("submit", (event) => {
             event.preventDefault()
             let { name, email, password } = event.target
@@ -31,6 +39,23 @@
             console.log(name)
             console.log(email)
             console.log(password)
-        })
+
+            fetch(serverURL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    name,
+                    email,
+                    password
+                })
+            })
+            .then(response => response.json())
+            .then(user => {
+                console.log("Created new user")
+                alert("Sign-up Sucessful! Please go to 'Log-in' with your new account.")
+            })
+            .catch(error => console.log(error))})
     </script>
 </html>
